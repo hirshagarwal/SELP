@@ -40,7 +40,8 @@
         <activity
             android:name=".GameMapActivity"
             android:label="@string/title_activity_game_mape" />
-        <activity android:name=".GuessSongActivity"></activity>
+        <activity android:name=".GuessSongActivity" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>
