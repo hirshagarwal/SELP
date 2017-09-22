@@ -11,10 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -45,7 +45,9 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         // Check location permissions
         mLocationPermission = (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-        
+//        Places.getGeoDataClient(this, null);
+        // Construct GeoDataClient
+//        LocationServices.getFusedLocationProviderClient(this);
     }
 
 
