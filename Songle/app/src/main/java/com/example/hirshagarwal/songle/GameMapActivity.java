@@ -1,27 +1,38 @@
 package com.example.hirshagarwal.songle;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import android.support.design.widget.FloatingActionButton;
 
-public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
+    private GoogleApiClient mGoogleApiClient;
 
     // Bottom Sheet Variables
     private BottomSheetBehavior bottomSheetBehavior;
     private TextView bottomSheetHeader;
+
+    // Fields
+    private boolean mLocationPermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +42,10 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        // Check location permissions
+        mLocationPermission = (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+        
     }
 
 
@@ -52,6 +67,8 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(edinburgh));
 
+        updateLocation();
+
         // Initialize the bottom sheet after the map is ready
         initViews();
 
@@ -67,6 +84,21 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
             startActivity(intent);
         }
     };
+
+    private void updateLocation(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        } else {
+            Log.e("Update Location", "Didn't manage to update location");
+        }
+    }
+
+    private void getDeviceLocation(){
+        if (mLocationPermission){
+//            Task locationResult =
+        }
+    }
 
     private void initViews(){
         // Set all of the bottom sheet variables
