@@ -3,6 +3,8 @@ package com.example.hirshagarwal.songle;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -12,6 +14,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -19,12 +26,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import android.support.design.widget.FloatingActionButton;
 
 public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
+    private GeoDataClient mGeoDataClient;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
     private GoogleApiClient mGoogleApiClient;
 
     // Bottom Sheet Variables
@@ -32,7 +43,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     private TextView bottomSheetHeader;
 
     // Fields
-    private boolean mLocationPermission;
+    private Location mLastKnownLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +54,11 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // Check location permissions
-        mLocationPermission = (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-//        Places.getGeoDataClient(this, null);
-        // Construct GeoDataClient
-//        LocationServices.getFusedLocationProviderClient(this);
+       // Setup Geo Data Client
+        mGeoDataClient = Places.getGeoDataClient(this, null);
+        // Construct Fused Location Provider
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
     }
 
 
@@ -67,10 +78,11 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         // Add a marker in Sydney and move the camera
         LatLng edinburgh = new LatLng(55.953252, -3.188267);
         mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(edinburgh));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 100));
 
-        updateLocation();
-
+        // Add the location to the map UI
+        updateLocationUI();
+        getDeviceLocation();
         // Initialize the bottom sheet after the map is ready
         initViews();
 
@@ -87,7 +99,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     };
 
-    private void updateLocation(){
+    private void updateLocationUI(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -97,9 +109,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     private void getDeviceLocation(){
-        if (mLocationPermission){
-//            Task locationResult =
-        }
+
     }
 
     private void initViews(){
