@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -26,17 +24,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import android.support.design.widget.FloatingActionButton;
 
 public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
-    private GeoDataClient mGeoDataClient;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private GoogleApiClient mGoogleApiClient;
 
     // Bottom Sheet Variables
     private BottomSheetBehavior bottomSheetBehavior;
@@ -78,8 +73,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         // Add a marker in Sydney and move the camera
         LatLng edinburgh = new LatLng(55.953252, -3.188267);
         mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 100));
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 75));
         // Add the location to the map UI
         updateLocationUI();
         getDeviceLocation();
@@ -100,6 +94,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     };
 
     private void updateLocationUI(){
+        Log.d("Updating Location UI", "Updating Location UI");
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -109,7 +104,20 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     private void getDeviceLocation(){
+        Log.d("Getting Location", "Getting Location");
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    // Handle location found
+                    if (location != null){
+                        mLastKnownLocation = location;
+                        Log.d("Found Location", location.toString());
+                    }
+                }
+            });
 
+        }
     }
 
     private void initViews(){
