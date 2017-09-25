@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -12,11 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -24,14 +27,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import android.support.design.widget.FloatingActionButton;
+import android.widget.Toast;
 
-public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback{
+import java.sql.Connection;
+
+public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private GoogleMap mMap;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private FusedLocationProviderApi locationProvider = LocationServices.FusedLocationApi;
+    private GoogleApiClient googleApiClient;
+    private CoordinatorLayout mapLayout;
 
     // Bottom Sheet Variables
     private BottomSheetBehavior bottomSheetBehavior;
@@ -39,6 +46,12 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     // Fields
     private Location mLastKnownLocation;
+    private LocationRequest locationRequest;
+
+    // Hyperparameters
+    private static int UPDATE_INTERVAL = 5000; // ms - How frequently app requests updates - Counts against battery consumption for app
+    private static int FASEST_INTERVAL = 3000; // ms - How often app will recieve updates if it is requested by other apps
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +62,88 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-       // Setup Geo Data Client
-        mGeoDataClient = Places.getGeoDataClient(this, null);
-        // Construct Fused Location Provider
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        // Get the map layout
+        mapLayout = findViewById(R.id.layout_map);
 
+        // Build the GoogleAPI Client
+        googleApiClient = new GoogleApiClient.Builder(this)
+        .addApi(LocationServices.API)
+        .addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this)
+        .build();
+
+        // Initialize location request with accuracy and frequency for GPS updates
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(UPDATE_INTERVAL);
+        locationRequest.setFastestInterval(FASEST_INTERVAL);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
+    // -- Interface Methods --
+    // Connection Callback
+    public void onConnected(Bundle extras){
+        requestLocationUpdates();
+    }
+    public void onConnectionSuspended(int id){
+
+    }
+    // Connection Failed
+    public void onConnectionFailed(ConnectionResult r){
+
+    }
+    // Location Listener
+    public void onLocationChanged(Location currentLocation){
+        // Set the last location
+        mLastKnownLocation = currentLocation;
+        Log.d("Location", "Location Changed!");
+        // Start by simply creating a snackbar
+        Snackbar newLocation = Snackbar.make(mapLayout, "Location Updated:\r\n"+currentLocation.toString(), Snackbar.LENGTH_LONG);
+        newLocation.show();
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
+    }
+
+    // Request Location Updates Method
+    private void requestLocationUpdates(){
+        // Check permission and call the location services
+        if(checkPermission()){
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        }
+    }
+
+    // Override start and stop methods
+    /*
+     * These methods are here to ensure that we don't stay connected to services that we aren't using while the app is being multitasked or hidden for some reason
+     * If the app is stopped or started we can connect or disconnect from the service
+     * However if it's just paused or resumed we might want to just stop requesting updates
+     */
+    protected void onStart(){
+        super.onStart();
+        googleApiClient.connect();
+    }
+    protected void onStop(){
+        super.onStop();
+        googleApiClient.disconnect();
+    }
+    protected void onPause(){
+        super.onPause();
+        // Unsubscribe from the location updates
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+    }
+    protected void onResume(){
+        super.onResume();
+        if(googleApiClient.isConnected()){
+            requestLocationUpdates();
+        }
+        // If we're not already connected it will end up at the onConnected method when it is anyway
+    }
+
+    public boolean checkPermission(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Manipulates the map once available.
@@ -73,10 +161,9 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         // Add a marker in Sydney and move the camera
         LatLng edinburgh = new LatLng(55.953252, -3.188267);
         mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 75));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 10));
         // Add the location to the map UI
         updateLocationUI();
-        getDeviceLocation();
         // Initialize the bottom sheet after the map is ready
         initViews();
 
@@ -95,7 +182,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     private void updateLocationUI(){
         Log.d("Updating Location UI", "Updating Location UI");
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if(checkPermission()){
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
         } else {
@@ -103,27 +190,10 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
-    private void getDeviceLocation(){
-        Log.d("Getting Location", "Getting Location");
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    // Handle location found
-                    if (location != null){
-                        mLastKnownLocation = location;
-                        Log.d("Found Location", location.toString());
-                    }
-                }
-            });
-
-        }
-    }
-
     private void initViews(){
         // Set all of the bottom sheet variables
         bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.content_bottom_sheet_game_map));
-        bottomSheetHeader = (TextView) findViewById(R.id.bottom_sheet_header);
+        bottomSheetHeader = findViewById(R.id.bottom_sheet_header);
     }
 
     private void initListeners(){
