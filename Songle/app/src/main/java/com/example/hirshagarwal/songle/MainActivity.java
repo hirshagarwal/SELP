@@ -13,8 +13,10 @@ public class MainActivity extends AppCompatActivity {
 
     // Fields
     private boolean locationPermissionStatus = false;
+    private boolean internetPermissionStatus = false;
     // Define Fine Location Request Code
     private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1337;
+    private final int PERMISSIONS_REQUEST_ACCESS_INTERNET = 1338;
 
 
     @Override
@@ -24,9 +26,24 @@ public class MainActivity extends AppCompatActivity {
 
         // Get Location Permissions
         getLocationPermissions();
+        getNetworkPermissions();
+
+        // If network permission was granted we probably want to initiate the map download so that it feels quick
+
 
     }
 
+    // Setup the internet permissions
+    private void getNetworkPermissions(){
+        // Request network permissions if they are not available
+        if(ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED){
+            internetPermissionStatus = true;
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, PERMISSIONS_REQUEST_ACCESS_INTERNET);
+        }
+    }
+
+    // Setup the location permissions
     private void getLocationPermissions(){
         // Request location permissions if they are not available
         if(ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){

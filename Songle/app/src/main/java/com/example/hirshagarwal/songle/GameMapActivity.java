@@ -50,7 +50,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     // Hyperparameters
     private static int UPDATE_INTERVAL = 5000; // ms - How frequently app requests updates - Counts against battery consumption for app
-    private static int FASEST_INTERVAL = 3000; // ms - How often app will recieve updates if it is requested by other apps
+    private static int FASEST_INTERVAL = 3000; // ms - How often app will receive updates if it is requested by other apps
 
 
     @Override
@@ -79,26 +79,45 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
+    // Callback for when the map is ready
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng edinburgh = new LatLng(55.953252, -3.188267);
+        mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 10));
+        // Add the location to the map UI
+        updateLocationUI();
+        // Initialize the bottom sheet after the map is ready
+        initViews();
+
+        // Setup FAB Listener
+        FloatingActionButton fab = findViewById(R.id.guess_fab);
+        fab.setOnClickListener(guessFab);
+    }
+
     // -- Interface Methods --
+    /*
+    * All of the methods for location requests
+    */
     // Connection Callback
     public void onConnected(Bundle extras){
         requestLocationUpdates();
     }
     public void onConnectionSuspended(int id){
-
+        Log.i("Location", "Connection Suspended");
     }
     // Connection Failed
     public void onConnectionFailed(ConnectionResult r){
-
+        Log.e("Location", "Connection Failed");
     }
     // Location Listener
     public void onLocationChanged(Location currentLocation){
         // Set the last location
         mLastKnownLocation = currentLocation;
-        Log.d("Location", "Location Changed!");
-        // Start by simply creating a snackbar
-        Snackbar newLocation = Snackbar.make(mapLayout, "Location Updated:\r\n"+currentLocation.toString(), Snackbar.LENGTH_LONG);
-        newLocation.show();
+        // Have the camera follow the user
         mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
     }
 
@@ -145,33 +164,11 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+    /*
+    * Other methods
      */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng edinburgh = new LatLng(55.953252, -3.188267);
-        mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 10));
-        // Add the location to the map UI
-        updateLocationUI();
-        // Initialize the bottom sheet after the map is ready
-        initViews();
-
-        // Setup FAB Listener
-        FloatingActionButton fab = findViewById(R.id.guess_fab);
-        fab.setOnClickListener(guessFab);
-    }
-
+    // Guess FAB Action
     private View.OnClickListener guessFab = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -180,6 +177,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     };
 
+    // Update the UI with a current location button
     private void updateLocationUI(){
         Log.d("Updating Location UI", "Updating Location UI");
         if(checkPermission()){
