@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -29,14 +31,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.support.design.widget.FloatingActionButton;
-import android.widget.Toast;
-
-import java.sql.Connection;
 
 public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private GoogleMap mMap;
-    private FusedLocationProviderApi locationProvider = LocationServices.FusedLocationApi;
+//    private FusedLocationProviderClient locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     private GoogleApiClient googleApiClient;
     private CoordinatorLayout mapLayout;
 
