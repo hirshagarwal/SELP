@@ -2,18 +2,34 @@ package com.example.hirshagarwal.songle;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by Hirsh Agarwal on 9/27/2017.
  */
 
 public class MapItem {
-    public final String name;
-    public final String type;
-    public final Location location;
+    public String name;
+    public String type;
+    public LatLng location;
 
-    private MapItem(String name, String type, Location location){
+    // Getters and Setters
+    public void setName(String name){
         this.name = name;
+    }
+    public void setType(String type){
         this.type = type;
+    }
+    public void setLocation(LatLng location){
         this.location = location;
+    }
+    public String getName(){
+        return name;
+    }
+    public String getType(){
+        return type;
+    }
+    public LatLng getLocation(){
+        return location;
     }
 }

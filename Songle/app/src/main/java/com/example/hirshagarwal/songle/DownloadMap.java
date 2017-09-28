@@ -76,18 +76,7 @@ public class DownloadMap extends AsyncTask<URL, Integer, String> {
 
     protected void onPostExecute(String data){
         // Create the XML Parser
-
-        InputStream stream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
-        try {
-            XmlPullParser parser = Xml.newPullParser();
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-            parser.setInput(stream, null);
-            parser.nextTag();
-        } catch (org.xmlpull.v1.XmlPullParserException e){
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        CurrentMap.setMap(data);
         Log.d("Maps Request", "Request Complete");
     }
 

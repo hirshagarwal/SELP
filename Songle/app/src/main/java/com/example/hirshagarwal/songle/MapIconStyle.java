@@ -5,14 +5,38 @@ package com.example.hirshagarwal.songle;
  */
 
 public class MapIconStyle {
-    public final String name;
-    public final int scale;
-    public final String link;
+    public String name;
+    public double scale;
+    public String link;
 
-    public MapIconStyle(String name, int scale, String link){
+    public MapIconStyle(){
+
+    }
+
+    public MapIconStyle(String name, double scale, String link){
         this.name = name;
         this.scale = scale;
         this.link = link;
+    }
+
+    // Getters and Setters
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setScale(double scale){
+        this.scale = scale;
+    }
+    public void setLink(String link){
+        this.link = link;
+    }
+    public String getName(){
+        return name;
+    }
+    public String getLink(){
+        return link;
+    }
+    public double getScale(){
+        return scale;
     }
 
 }

@@ -27,6 +27,8 @@ import com.google.android.gms.maps.GoogleMap;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -87,6 +89,17 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         LatLng edinburgh = new LatLng(55.953252, -3.188267);
         mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 10));
+        int markersToAdd = CurrentMap.getMapItems().size();
+        Log.d("Markers", markersToAdd+"");
+        for(int i=0; i<markersToAdd; i++){
+            Log.d("Markers", "Adding Markers");
+            LatLng markerPos = CurrentMap.getMapItems().get(i).getLocation();
+            if(CurrentMap.getMapItems().get(i).getType().equalsIgnoreCase("boring")){
+                mMap.addMarker(new MarkerOptions().position(markerPos).title("Marker in Edinburgh").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            } else {
+                mMap.addMarker(new MarkerOptions().position(markerPos).title("Marker in Edinburgh"));
+            }
+        }
         // Add the location to the map UI
         updateLocationUI();
         // Initialize the bottom sheet after the map is ready
