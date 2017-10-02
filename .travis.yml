@@ -8,7 +8,7 @@ android:
     - android-26
 
 script:
- - chmod +x ./gradlew
+ - ./gradlew assembles
 
 sudo: required
 jdk: oraclejdk8
