@@ -6,6 +6,7 @@ android:
     - platform-tools
     - build-tools-26.0.1
     - android-26
-
-sudo: required
-jdk: oraclejdk8
+script:
+  - ./gradlew build
+before_install:
+  - chmod +x gradlew

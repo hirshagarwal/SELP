@@ -90,8 +90,10 @@ public class CurrentMap{
                 } else if (tagName.equalsIgnoreCase("Icon")){
                     // Do nothing - keep parsing
                 } else if (tagName.equalsIgnoreCase("href")){
-                    // Set the link
-                    mapIconStyle.setLink(xpp.getText());
+                    eventType = xpp.next();
+                    if (eventType == XmlPullParser.TEXT){
+                        mapIconStyle.setLink(xpp.getText());
+                    }
                 }
                 // Case for Placemark
                 else if (tagName.equalsIgnoreCase("Placemark")){
