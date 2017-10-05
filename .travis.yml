@@ -9,4 +9,5 @@ android:
 script:
   - ./gradlew build
 before_install:
-  - chmod +x Songle/gradlew
+  - cd Songle
+  - chmod +x gradlew
