@@ -8,6 +8,7 @@ android:
     - android-26
 script:
   - ./gradlew build
+  - ./gradlew test
 before_install:
   - cd Songle
   - chmod +x gradlew
