@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.CountDownTimer;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -78,6 +79,20 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         locationRequest.setInterval(UPDATE_INTERVAL);
         locationRequest.setFastestInterval(FASEST_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        // Setup the timer
+        createTimer();
+    }
+
+    private void createTimer(){
+        new CountDownTimer(30*60*1000, 1000){
+            public void onTick(long millisUntilFinished){
+                bottomSheetHeader.setText("Time Remaining: " + (int)millisUntilFinished/(60*1000) + ":" + (millisUntilFinished/1000)%60);
+            }
+            public void onFinish(){
+                //TODO: Trigger out of time
+            }
+        }.start();
     }
 
     // Callback for when the map is ready
@@ -92,7 +107,6 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         int markersToAdd = CurrentMap.getMapItems().size();
         Log.d("Markers", markersToAdd+"");
         for(int i=0; i<markersToAdd; i++){
-            Log.d("Markers", "Adding Markers");
             LatLng markerPos = CurrentMap.getMapItems().get(i).getLocation();
             if(CurrentMap.getMapItems().get(i).getType().equalsIgnoreCase("boring")){
                 mMap.addMarker(new MarkerOptions().position(markerPos).title("Marker in Edinburgh").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));

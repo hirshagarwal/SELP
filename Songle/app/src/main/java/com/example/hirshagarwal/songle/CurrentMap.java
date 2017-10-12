@@ -72,7 +72,7 @@ public class CurrentMap{
         while(eventType != XmlPullParser.END_DOCUMENT){
             String tagName = xpp.getName();
             if (eventType == XmlPullParser.START_DOCUMENT){
-                Log.d("XML", "Start Document");
+//                Log.d("XML", "Start Document");
             }
             if(eventType == XmlPullParser.START_TAG){
                 // Case for Icon Style
@@ -84,7 +84,7 @@ public class CurrentMap{
                 } else if(tagName.equalsIgnoreCase("Scale")){
                     eventType = xpp.next();
                     if (eventType == XmlPullParser.TEXT) {
-                        Log.d("XML", xpp.getText());
+//                        Log.d("XML", xpp.getText());
                         mapIconStyle.setScale(Double.parseDouble(xpp.getText()));
                     }
                 } else if (tagName.equalsIgnoreCase("Icon")){
@@ -121,7 +121,7 @@ public class CurrentMap{
                         longitude = Double.parseDouble(latLong[1]);
                         LatLng coordinates = new LatLng(longitude, latitude);
                         mapItem.setLocation(coordinates);
-                        Log.d("XML", "Coordinates Added: " + coordinates.toString());
+//                        Log.d("XML", "Coordinates Added: " + coordinates.toString());
                     }
 
                 }
@@ -135,7 +135,7 @@ public class CurrentMap{
                 }
             }
             eventType = xpp.next();
-            Log.d("XML", "Next Line");
+//            Log.d("XML", "Next Line");
         }
         Log.d("XML Parser", "Parse Completed");
     }
