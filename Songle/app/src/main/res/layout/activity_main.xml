@@ -90,12 +90,26 @@
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <ImageView android:id="@+id/main_page_settings_icon"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/settings_icon_shadow"
         android:onClick="settingsStart"
         app:layout_constraintBottom_toTopOf="@id/designed_in_edinburgh_text"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="110dp"/>
+
+    <ImageView android:id="@+id/main_page_leaderboard_icon"
+        android:onClick="leaderboardStart"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/Leaderboard_Icon_Shadow"
+        app:layout_constraintBottom_toTopOf="@id/designed_in_edinburgh_text"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="110dp"/>
+
+
 
 
 

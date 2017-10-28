@@ -60,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void leaderboardStart(View view){
+
+    }
+
     // Settings
     public void settingsStart(View view){
         Intent intent = new Intent(this, SettingsActivity.class);

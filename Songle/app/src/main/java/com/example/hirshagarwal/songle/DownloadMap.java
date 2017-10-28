@@ -41,8 +41,6 @@ public class DownloadMap extends AsyncTask<URL, Integer, String> {
         // Check that URL is available
         // TODO: Implement URL verification
         // Try to convert the String to a URL
-
-
     }
 
     // Interface Methods

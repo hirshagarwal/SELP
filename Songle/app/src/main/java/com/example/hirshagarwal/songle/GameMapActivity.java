@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.CountDownTimer;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -16,10 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderApi;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -28,12 +24,16 @@ import com.google.android.gms.maps.GoogleMap;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.data.kml.KmlLayer;
 
 import android.support.design.widget.FloatingActionButton;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -49,6 +49,8 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     // Fields
     private Location mLastKnownLocation;
     private LocationRequest locationRequest;
+    private KmlLayer currentKml;
+    static String mapString;
 
     // Hyperparameters
     private static int UPDATE_INTERVAL = 5000; // ms - How frequently app requests updates - Counts against battery consumption for app
@@ -105,15 +107,19 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 10));
         int markersToAdd = CurrentMap.getMapItems().size();
-        Log.d("Markers", markersToAdd+"");
-        for(int i=0; i<markersToAdd; i++){
-            LatLng markerPos = CurrentMap.getMapItems().get(i).getLocation();
-            if(CurrentMap.getMapItems().get(i).getType().equalsIgnoreCase("boring")){
-                mMap.addMarker(new MarkerOptions().position(markerPos).title("Marker in Edinburgh").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-            } else {
-                mMap.addMarker(new MarkerOptions().position(markerPos).title("Marker in Edinburgh"));
-            }
+
+        mapString = CurrentMap.getMapString();
+        try{
+            InputStream stream = new ByteArrayInputStream(mapString.getBytes(StandardCharsets.UTF_8.name()));
+            currentKml = new KmlLayer(mMap, stream, getApplicationContext());
+
+            currentKml.addLayerToMap();
+        } catch(IOException e){
+            e.printStackTrace();
+        } catch (org.xmlpull.v1.XmlPullParserException e){
+            e.printStackTrace();
         }
+
         // Add the location to the map UI
         updateLocationUI();
         // Initialize the bottom sheet after the map is ready

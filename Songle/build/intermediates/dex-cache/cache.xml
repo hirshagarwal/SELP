@@ -3,12 +3,57 @@
 
     <item
         is-multidex="true"
+        jar="C:\Users\Hirsh Agarwal\.android\build-cache\f5a8af44f5317e796baa5bc5f222e14104dad3bf\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="56e96fa067ba358a6c60184e40947810dcd78f30">
+        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_4398fd3e658ec64586ea444f68c7f997dc004c03\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Hirsh Agarwal\.android\build-cache\522a3faacc056dec5c19398785b15833293c4bd7\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="083e7bc5a9d9404b49b8f34e5091532361fa28e6">
+        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_7a569a4dba21a8665cd9ebac27112f05a2d670f3\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Hirsh Agarwal\.android\build-cache\abef5e22abb222c23871ba1ba3cc8d02e4fc1a87\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="e41a052c714bf67f743c22ed74153422ad773f88">
+        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_d63b673d4677fadc19da55b806ed20f0660b4fa1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Hirsh Agarwal\.android\build-cache\414b445ff6ae50fb65744a6ca4bd7806c25bc651\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
         sha1="41872d809cff2114169756aad6dcd593be2ecb59">
         <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_20572ca3b58efe04baf02a1029d85504f8953bd1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Hirsh Agarwal\.android\build-cache\dd081759b5310350b3b69ca9e5c28d06d5efdb02\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="a4590fa7eadce322ca893129fdc999074e1aa5bf">
+        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_7c14ad132c6a8062e8144da163f041c09dc72d18\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Hirsh Agarwal\.android\build-cache\4dfb5f28551cd68c7ddcb118f1a38491596d1cf7\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="d095503f29a8dedc55b9326ed97a5902a1527ab9">
+        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_a5f986d271227ee05e7d86f504e79eb7c5d67b3f\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -21,11 +66,20 @@
     </item>
     <item
         is-multidex="true"
+        jar="C:\Users\Hirsh Agarwal\.android\build-cache\590f34f09275c58a2280d48109ef166504db4545\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="e7424f816f538c2acfba6169b25e297ea22afbd8">
+        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_6a98075791d7b07781c758f5e52f2420937d0997\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
-        sha1="a67f0da718bd7a7a8b35adc7100de53ed7b1ce7b">
+        sha1="47785df78991197f7a0c0e5741f68c14bc4af758">
         <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_7a0748f77b5478f3effe887f51dcc9cefe92258c\classes.dex" />
     </item>
     <item
@@ -36,6 +90,15 @@
         revision="26.0.1"
         sha1="681eeeaec5300e5257ad9bf889c3859ba3833d5a">
         <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_51059e9785549565d8ec867d0a668e758ab4cee5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Hirsh Agarwal\.android\build-cache\fa28aa11e6503543f61f6443622af9de1f1c8d00\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="7b4dc2d9e39fb8ec5ddca9b3b3cb7c627690f3a6">
+        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_601e610d5fd51d0fd2c2b4957daba6c1fcf7e019\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -75,78 +138,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\Hirsh Agarwal\.android\build-cache\4e2d1c0c902f8991ee5dc8fec1c4cca89ecd09d0\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="5b65ec1ebc84af3baecfd28954c9e7ff01b937a8">
-        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_6221c87f2f3455be5310ecbc0472ebd4ec7d8f9e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Hirsh Agarwal\.android\build-cache\8f5d3625f09163fd12e36a1adfe3e7cc528792ed\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="01a590e11a94cb7f5c8b1243d4a2783eab4d0a34">
-        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_4a8e1dea49e95a7fb3be4e755c4a812b1461127d\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Hirsh Agarwal\.android\build-cache\f5a8af44f5317e796baa5bc5f222e14104dad3bf\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="56e96fa067ba358a6c60184e40947810dcd78f30">
-        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_4398fd3e658ec64586ea444f68c7f997dc004c03\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Hirsh Agarwal\.android\build-cache\522a3faacc056dec5c19398785b15833293c4bd7\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="083e7bc5a9d9404b49b8f34e5091532361fa28e6">
-        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_7a569a4dba21a8665cd9ebac27112f05a2d670f3\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Hirsh Agarwal\.android\build-cache\dd081759b5310350b3b69ca9e5c28d06d5efdb02\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="a4590fa7eadce322ca893129fdc999074e1aa5bf">
-        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_7c14ad132c6a8062e8144da163f041c09dc72d18\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Hirsh Agarwal\.android\build-cache\4dfb5f28551cd68c7ddcb118f1a38491596d1cf7\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="d095503f29a8dedc55b9326ed97a5902a1527ab9">
-        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_a5f986d271227ee05e7d86f504e79eb7c5d67b3f\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Hirsh Agarwal\.android\build-cache\590f34f09275c58a2280d48109ef166504db4545\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="e7424f816f538c2acfba6169b25e297ea22afbd8">
-        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_6a98075791d7b07781c758f5e52f2420937d0997\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Hirsh Agarwal\.android\build-cache\fa28aa11e6503543f61f6443622af9de1f1c8d00\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="7b4dc2d9e39fb8ec5ddca9b3b3cb7c627690f3a6">
-        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_601e610d5fd51d0fd2c2b4957daba6c1fcf7e019\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\Hirsh Agarwal\.android\build-cache\d65aa70b8a4292420d382b1ea817e744c7d86797\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
@@ -156,12 +147,30 @@
     </item>
     <item
         is-multidex="true"
+        jar="C:\Users\Hirsh Agarwal\.android\build-cache\4e2d1c0c902f8991ee5dc8fec1c4cca89ecd09d0\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="5b65ec1ebc84af3baecfd28954c9e7ff01b937a8">
+        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_6221c87f2f3455be5310ecbc0472ebd4ec7d8f9e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Hirsh Agarwal\.android\build-cache\b2d7d8cf6e60902380f2cb8f27eeb950a3e9abba\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
         sha1="71af915b7f4f7ec0b5f768b365145bb6a5cb9a66">
         <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_11ae7e58be50626481dfe36cc4679e03d1ae53ab\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Hirsh Agarwal\.android\build-cache\8f5d3625f09163fd12e36a1adfe3e7cc528792ed\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="01a590e11a94cb7f5c8b1243d4a2783eab4d0a34">
+        <dex dex="C:\Users\Hirsh Agarwal\Documents\School\SELP\Songle\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_4a8e1dea49e95a7fb3be4e755c4a812b1461127d\classes.dex" />
     </item>
     <item
         is-multidex="true"
