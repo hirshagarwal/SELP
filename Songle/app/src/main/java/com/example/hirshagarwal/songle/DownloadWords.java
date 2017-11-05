@@ -21,7 +21,7 @@ public class DownloadWords extends AsyncTask<URL, Integer, String>{
         try{
             this.requestUrl = urls[0];
             httpConnection = (HttpURLConnection) requestUrl.openConnection();
-            
+
         } catch (IOException e){
             e.printStackTrace();
         }

@@ -103,7 +103,7 @@
         android:onClick="leaderboardStart"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/Leaderboard_Icon_Shadow"
+        android:src="@drawable/leaderboard_icon_shadow"
         app:layout_constraintBottom_toTopOf="@id/designed_in_edinburgh_text"
         android:layout_marginBottom="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
