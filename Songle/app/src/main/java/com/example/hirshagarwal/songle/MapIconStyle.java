@@ -1,5 +1,7 @@
 package com.example.hirshagarwal.songle;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Hirsh Agarwal on 9/27/2017.
  */
@@ -8,7 +10,7 @@ public class MapIconStyle {
     public String name;
     public double scale;
     public String link;
-
+    private Bitmap image;
     public MapIconStyle(){
 
     }
@@ -29,6 +31,9 @@ public class MapIconStyle {
     public void setLink(String link){
         this.link = link;
     }
+    public void setImage(Bitmap image){
+        this.image = image;
+    }
     public String getName(){
         return name;
     }
@@ -37,6 +42,9 @@ public class MapIconStyle {
     }
     public double getScale(){
         return scale;
+    }
+    public Bitmap getImage(){
+        return image;
     }
 
 }

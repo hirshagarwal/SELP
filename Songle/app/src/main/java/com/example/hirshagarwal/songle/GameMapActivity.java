@@ -3,6 +3,7 @@ package com.example.hirshagarwal.songle;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.CountDownTimer;
 import android.support.design.widget.BottomSheetBehavior;
@@ -24,9 +25,13 @@ import com.google.android.gms.maps.GoogleMap;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.data.kml.KmlContainer;
 import com.google.maps.android.data.kml.KmlLayer;
+import com.google.maps.android.data.kml.KmlPlacemark;
 
 import android.support.design.widget.FloatingActionButton;
 
@@ -34,6 +39,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 
 public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -105,21 +111,15 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         // Add a marker in Sydney and move the camera
         LatLng edinburgh = new LatLng(55.953252, -3.188267);
         mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 10));
-        int markersToAdd = CurrentMap.getMapItems().size();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 15));
+        int numPlacemarks = CurrentMap.getMapItems().size();
+        Bitmap scaledIcon = Bitmap.createScaledBitmap(CurrentMap.getIconStyles().get(0).getImage(), 125, 125, false);
+        BitmapDescriptor currentIcon = BitmapDescriptorFactory.fromBitmap(scaledIcon);
 
-        mapString = CurrentMap.getMapString();
-        try{
-            InputStream stream = new ByteArrayInputStream(mapString.getBytes(StandardCharsets.UTF_8.name()));
-            currentKml = new KmlLayer(mMap, stream, getApplicationContext());
-
-            currentKml.addLayerToMap();
-        } catch(IOException e){
-            e.printStackTrace();
-        } catch (org.xmlpull.v1.XmlPullParserException e){
-            e.printStackTrace();
+        for(int i=0; i<CurrentMap.getMapItems().size(); i++) {
+            mMap.addMarker(new MarkerOptions().position(CurrentMap.getMapItems().get(i).getLocation()).title("Test").icon(currentIcon));
+//            mMap.addMarker(new MarkerOptions().position(CurrentMap.getMapItems().get(i).getLocation()).title("Test"));
         }
-
         // Add the location to the map UI
         updateLocationUI();
         // Initialize the bottom sheet after the map is ready
