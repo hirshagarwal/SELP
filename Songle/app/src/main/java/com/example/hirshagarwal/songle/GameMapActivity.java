@@ -28,6 +28,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.data.kml.KmlContainer;
 import com.google.maps.android.data.kml.KmlLayer;
@@ -41,7 +42,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
-public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
     private GoogleMap mMap;
 //    private FusedLocationProviderClient locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -107,17 +108,27 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            public boolean onMarkerClick(Marker marker){
+                Log.d("Marker Click", marker.getTag().toString());
+                markerClickAction(marker);
+                return false;
+            }
+        });
         // Add a marker in Sydney and move the camera
         LatLng edinburgh = new LatLng(55.953252, -3.188267);
-        mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
+//        mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 15));
         int numPlacemarks = CurrentMap.getMapItems().size();
         Bitmap scaledIcon = Bitmap.createScaledBitmap(CurrentMap.getIconStyles().get(0).getImage(), 125, 125, false);
         BitmapDescriptor currentIcon = BitmapDescriptorFactory.fromBitmap(scaledIcon);
 
         for(int i=0; i<CurrentMap.getMapItems().size(); i++) {
-            mMap.addMarker(new MarkerOptions().position(CurrentMap.getMapItems().get(i).getLocation()).title("Test").icon(currentIcon));
+            MapItem currentMapItem = CurrentMap.getMapItems().get(i);
+            if (currentMapItem.getType().equals("boring")){
+                Marker currentMarker = mMap.addMarker(new MarkerOptions().position(currentMapItem.getLocation()).title("Test").icon(currentIcon));
+                currentMarker.setTag(currentMapItem.getName());
+            }
 //            mMap.addMarker(new MarkerOptions().position(CurrentMap.getMapItems().get(i).getLocation()).title("Test"));
         }
         // Add the location to the map UI
@@ -159,6 +170,12 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         if(checkPermission()){
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
+    }
+
+    public boolean markerClickAction(Marker marker){
+        String tag = marker.getTag().toString();
+        Log.d("Markers", "Click");
+        return true;
     }
 
     // Override start and stop methods
