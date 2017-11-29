@@ -32,15 +32,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.data.kml.KmlContainer;
 import com.google.maps.android.data.kml.KmlLayer;
-import com.google.maps.android.data.kml.KmlPlacemark;
 
 import android.support.design.widget.FloatingActionButton;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 
 public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
@@ -110,7 +104,6 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             public boolean onMarkerClick(Marker marker){
-                Log.d("Marker Click", marker.getTag().toString());
                 markerClickAction(marker);
                 return false;
             }
@@ -174,7 +167,20 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     public boolean markerClickAction(Marker marker){
         String tag = marker.getTag().toString();
-        Log.d("Markers", "Click");
+//        Log.d("Marker Click", marker.getTag().toString());
+        // Calculate Distance
+        float[] results = new float[]{0, 0, 0};
+        LatLng markerPos = marker.getPosition();
+        Location.distanceBetween(markerPos.latitude, markerPos.longitude, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), results);
+        Log.d("Distance", results[0] + "");
+        if(results[0] < 35){
+            marker.remove();
+            // Get bottom sheet text
+            TextView bottomSheetText = (TextView) findViewById(R.id.bottom_sheet_text);
+            bottomSheetText.append(tag);
+            // Add word to bottom sheet
+
+        }
         return true;
     }
 
