@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         getNetworkPermissions();
 
         // If network permission was granted we probably want to initiate the map download so that it feels quick
-        CurrentMap.loadMap();
+        CurrentMap.loadData();
 
     }
 

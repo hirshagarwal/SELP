@@ -5,41 +5,50 @@ import android.os.AsyncTask;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by Hirsh Agarwal on 10/26/2017.
+ * Created by Hirsh Agarwal on 11/29/2017.
  */
 
-public class DownloadWords extends AsyncTask<URL, Integer, String>{
+public class DownloadSongs extends AsyncTask<Void, Integer, String>{
 
-    private URL requestUrl;
     private HttpURLConnection httpConnection;
-    private static final String ns = null;
 
-    @Override
-    protected String doInBackground(URL... urls) {
+    protected void onPreExecute(){
+        super.onPreExecute();
+    }
+
+    protected String doInBackground(Void... params){
+        // Create the request URL
+        URL url;
         StringBuilder sb = new StringBuilder();
         try{
-            this.requestUrl = urls[0];
-            httpConnection = (HttpURLConnection) requestUrl.openConnection();
-            // Connect to the specified URL
+            url = new URL("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/songs.xml");
+            // Create a connector
+            httpConnection = (HttpURLConnection) url.openConnection();
+            // Connect to the URL
             httpConnection.connect();
             // Build a buffered reader
-            // TODO: Comment this xml input system
             BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
             String line = "";
             while((line = br.readLine()) != null){
                 sb.append(line).append("\n");
             }
+
+        } catch (MalformedURLException e){
+            e.printStackTrace();
         } catch (java.io.IOException e){
             e.printStackTrace();
         }
+
         return sb.toString();
     }
 
     protected void onPostExecute(String data){
-        CurrentMap.setWordsString(data);
+        CurrentMap.setSongsString(data);
+        CurrentMap.loadMap();
     }
 
 }

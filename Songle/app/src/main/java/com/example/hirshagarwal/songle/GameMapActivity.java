@@ -35,6 +35,11 @@ import com.google.maps.android.data.kml.KmlLayer;
 
 import android.support.design.widget.FloatingActionButton;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 
 public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
@@ -85,6 +90,8 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         // Setup the timer
         createTimer();
+
+        //TODO: Create the bonus item drop times
     }
 
     private void createTimer(){
@@ -108,22 +115,21 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
                 return false;
             }
         });
+        mapString = CurrentMap.getMapString();
         // Add a marker in Sydney and move the camera
         LatLng edinburgh = new LatLng(55.953252, -3.188267);
 //        mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 15));
-        int numPlacemarks = CurrentMap.getMapItems().size();
-        Bitmap scaledIcon = Bitmap.createScaledBitmap(CurrentMap.getIconStyles().get(0).getImage(), 125, 125, false);
-        BitmapDescriptor currentIcon = BitmapDescriptorFactory.fromBitmap(scaledIcon);
-
-        for(int i=0; i<CurrentMap.getMapItems().size(); i++) {
-            MapItem currentMapItem = CurrentMap.getMapItems().get(i);
-            if (currentMapItem.getType().equals("boring")){
-                Marker currentMarker = mMap.addMarker(new MarkerOptions().position(currentMapItem.getLocation()).title("Test").icon(currentIcon));
-                currentMarker.setTag(currentMapItem.getName());
-            }
-//            mMap.addMarker(new MarkerOptions().position(CurrentMap.getMapItems().get(i).getLocation()).title("Test"));
+        try{
+            InputStream stream = new ByteArrayInputStream(mapString.getBytes(StandardCharsets.UTF_8.name()));
+            currentKml = new KmlLayer(mMap, stream, getApplicationContext());
+            currentKml.addLayerToMap();
+        } catch(IOException e) {
+            e.printStackTrace();
+        } catch (org.xmlpull.v1.XmlPullParserException e){
+            e.printStackTrace();
         }
+
         // Add the location to the map UI
         updateLocationUI();
         // Initialize the bottom sheet after the map is ready
@@ -166,20 +172,25 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     public boolean markerClickAction(Marker marker){
-        String tag = marker.getTag().toString();
-//        Log.d("Marker Click", marker.getTag().toString());
+        Log.d("Marker Click", marker.getTitle());
+        String[] splitTitle = marker.getTitle().split(":");
+        int lineNumber = Integer.parseInt(splitTitle[0]) - 1; // Subtract one since the line numbers are 1 indexed
+        int wordNumber = Integer.parseInt(splitTitle[1]) - 1; // Again to account for 1 indexing
         // Calculate Distance
         float[] results = new float[]{0, 0, 0};
         LatLng markerPos = marker.getPosition();
         Location.distanceBetween(markerPos.latitude, markerPos.longitude, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), results);
         Log.d("Distance", results[0] + "");
-        if(results[0] < 35){
+        if(results[0] < 35 || true){ //TODO: Remove always true from this line
+            String words = CurrentMap.getWords();
+            String[] lines = words.split(System.getProperty("line.separator"));
+            String[] lineWords = lines[lineNumber].split("\t")[1].split(" ");
+            String foundWord = lineWords[wordNumber];
             marker.remove();
             // Get bottom sheet text
             TextView bottomSheetText = (TextView) findViewById(R.id.bottom_sheet_text);
-            bottomSheetText.append(tag);
+            bottomSheetText.append(foundWord + "\r\n");
             // Add word to bottom sheet
-
         }
         return true;
     }
@@ -190,6 +201,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
      * If the app is stopped or started we can connect or disconnect from the service
      * However if it's just paused or resumed we might want to just stop requesting updates
      */
+
     protected void onStart(){
         super.onStart();
         googleApiClient.connect();
