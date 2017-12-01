@@ -73,7 +73,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     private static int FASEST_INTERVAL = 3000; // ms - How often app will receive updates if it is requested by other apps
 
     // Map drop variables
-    int map2Time, map3Time, map4Time, map5Time;
+    int map2Time;
     boolean bonusActive = false;
 
 
@@ -119,9 +119,6 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         // Randomly Generate Times for Bonus Drop
         map2Time = (int)(Math.random()*5 + 20);
-        map3Time = (int)(Math.random()*5 + 15);
-        map4Time = (int)(Math.random()*5 + 10);
-        map5Time = (int)(Math.random()*5 + 5);
 
         Log.d("Upgrade", "Time to upgrade: " + map2Time);
 
@@ -129,7 +126,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
             public void onTick(long millisUntilFinished){
                 bottomSheetHeader.setText("Time Remaining: " + (int)millisUntilFinished/(60*1000) + ":" + (millisUntilFinished/1000)%60);
 
-                if ((millisUntilFinished/(60*1000) == map2Time && !bonusActive) || !bonusActive){
+                if (((millisUntilFinished/(60*1000) == map2Time && !bonusActive) || !bonusActive) && CurrentMap.getMapNumber()<5){
                     // Add upgrade item
                     Log.d("Upgrade", "Map2");
                     LatLng edinburgh = new LatLng(55.9458, -3.1878);
@@ -243,6 +240,10 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         // Calculate Distance
         float[] results = new float[]{0, 0, 0};
         LatLng markerPos = marker.getPosition();
+        if(mLastKnownLocation == null){
+            // TODO: Create location not found error
+            return false;
+        }
         Location.distanceBetween(markerPos.latitude, markerPos.longitude, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), results);
         Log.d("Distance", results[0] + "");
         if(results[0] < 35 || true){ // TODO: Remove always true
@@ -263,16 +264,16 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
                 }
             }
             Log.d("Icon", bitmapLink);
-            TextView bottomSheetText = findViewById(R.id.bottom_sheet_text);
-//            bottomSheetText.append(foundWord + "\r\n");
             // Add word to bottom sheet
             LyricItem newLyric = new LyricItem();
             foundWord = foundWord.substring(0, 1).toUpperCase() + foundWord.substring(1);
             newLyric.setWord(foundWord);
+            Log.d("Word", foundWord);
             newLyric.setIcon(bmp);
             songList.add(newLyric);
-            mAdapter.notifyDataSetChanged();
+            System.out.println("Last Song: " + songList.get(songList.size()-1).getWord());
             marker.remove();
+            mAdapter.notifyDataSetChanged();
         }
         return true;
     }

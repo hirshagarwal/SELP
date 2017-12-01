@@ -81,6 +81,8 @@ public class CurrentMap{
     public static void setMap(String mapString){
         // Set the map string
         CurrentMap.mapString = mapString;
+        // Delete the old styles
+        mapIconStyles.clear();
         // Parse the map to get the icons
         parseMap(mapString);
         Log.d("Map Download", "Map set");
@@ -89,7 +91,7 @@ public class CurrentMap{
     }
 
     private static void downloadIcons(){
-        Log.d("Number of Styles", mapIconStyles.size() + "");
+        Log.d("Styles", mapIconStyles.size() + "");
         for(int i=0; i<mapIconStyles.size(); i++){
             DownloadBitmap imageDownload = new DownloadBitmap(i);
             try{
@@ -175,7 +177,7 @@ public class CurrentMap{
                         }
                         xpp.next();
                         newItem.setType(xpp.getText());
-                        Log.d("Placemark Info", "Search: " + placemarkName + " current: " + newItem.getName());
+//                        Log.d("Placemark Info", "Search: " + placemarkName + " current: " + newItem.getName());
                         if (newItem.getName().equals(placemarkName)){
                             return newItem.getType();
                         }
