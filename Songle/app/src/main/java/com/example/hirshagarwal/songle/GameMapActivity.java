@@ -11,6 +11,9 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +35,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.data.kml.KmlContainer;
 import com.google.maps.android.data.kml.KmlLayer;
+import com.google.maps.android.data.kml.KmlPlacemark;
 
 import android.support.design.widget.FloatingActionButton;
 
@@ -39,6 +43,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.cert.TrustAnchor;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
@@ -57,10 +64,17 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     private LocationRequest locationRequest;
     private KmlLayer currentKml;
     static String mapString;
+    private RecyclerView wordList;
+    private LyricsAdapter mAdapter;
+    private List<LyricItem> songList = new ArrayList<>();
 
     // Hyperparameters
     private static int UPDATE_INTERVAL = 5000; // ms - How frequently app requests updates - Counts against battery consumption for app
     private static int FASEST_INTERVAL = 3000; // ms - How often app will receive updates if it is requested by other apps
+
+    // Map drop variables
+    int map2Time, map3Time, map4Time, map5Time;
+    boolean bonusActive = false;
 
 
     @Override
@@ -88,6 +102,13 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         locationRequest.setFastestInterval(FASEST_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
+        // Setup the song list on the bottom sheet
+        wordList = findViewById(R.id.words_recycler);
+        mAdapter = new LyricsAdapter(songList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        wordList.setLayoutManager(mLayoutManager);
+        wordList.setItemAnimator(new DefaultItemAnimator());
+        wordList.setAdapter(mAdapter);
         // Setup the timer
         createTimer();
 
@@ -95,9 +116,29 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     private void createTimer(){
+
+        // Randomly Generate Times for Bonus Drop
+        map2Time = (int)(Math.random()*5 + 20);
+        map3Time = (int)(Math.random()*5 + 15);
+        map4Time = (int)(Math.random()*5 + 10);
+        map5Time = (int)(Math.random()*5 + 5);
+
+        Log.d("Upgrade", "Time to upgrade: " + map2Time);
+
         new CountDownTimer(30*60*1000, 1000){
             public void onTick(long millisUntilFinished){
                 bottomSheetHeader.setText("Time Remaining: " + (int)millisUntilFinished/(60*1000) + ":" + (millisUntilFinished/1000)%60);
+
+                if ((millisUntilFinished/(60*1000) == map2Time && !bonusActive) || !bonusActive){
+                    // Add upgrade item
+                    Log.d("Upgrade", "Map2");
+                    LatLng edinburgh = new LatLng(55.9458, -3.1878);
+                    mMap.addMarker(new MarkerOptions().position(edinburgh).title("Upgrade"));
+                    bonusActive = true;
+                    CurrentMap.incrementMapNumber();
+                    new DownloadMap().execute(CurrentMap.getMapUrl());
+                    map2Time -= 5;
+                }
             }
             public void onFinish(){
                 //TODO: Trigger out of time
@@ -117,9 +158,9 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         });
         mapString = CurrentMap.getMapString();
         // Add a marker in Sydney and move the camera
-        LatLng edinburgh = new LatLng(55.953252, -3.188267);
+        LatLng edinburgh = new LatLng(55.94, -3.187);
 //        mMap.addMarker(new MarkerOptions().position(edinburgh).title("Marker in Edinburgh"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edinburgh, 16));
         try{
             InputStream stream = new ByteArrayInputStream(mapString.getBytes(StandardCharsets.UTF_8.name()));
             currentKml = new KmlLayer(mMap, stream, getApplicationContext());
@@ -138,6 +179,22 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         // Setup FAB Listener
         FloatingActionButton fab = findViewById(R.id.guess_fab);
         fab.setOnClickListener(guessFab);
+    }
+
+    private void redrawMap(){
+        mapString = CurrentMap.getMapString();
+
+        try{
+            InputStream stream = new ByteArrayInputStream(mapString.getBytes(StandardCharsets.UTF_8.name()));
+            mMap.clear();
+            currentKml = new KmlLayer(mMap, stream, getApplicationContext());
+            currentKml.addLayerToMap();
+            bonusActive = false;
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (org.xmlpull.v1.XmlPullParserException e){
+            e.printStackTrace();
+        }
     }
 
     // -- Interface Methods --
@@ -159,8 +216,9 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     public void onLocationChanged(Location currentLocation){
         // Set the last location
         mLastKnownLocation = currentLocation;
+        // TODO: Reactive camera follow
         // Have the camera follow the user
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
+//        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
     }
 
     // Request Location Updates Method
@@ -173,6 +231,12 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     public boolean markerClickAction(Marker marker){
         Log.d("Marker Click", marker.getTitle());
+        // Check if the marker is an upgrade item
+        if(marker.getTitle().equals("Upgrade")){
+            marker.remove();
+            redrawMap();
+            return true;
+        }
         String[] splitTitle = marker.getTitle().split(":");
         int lineNumber = Integer.parseInt(splitTitle[0]) - 1; // Subtract one since the line numbers are 1 indexed
         int wordNumber = Integer.parseInt(splitTitle[1]) - 1; // Again to account for 1 indexing
@@ -181,16 +245,34 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         LatLng markerPos = marker.getPosition();
         Location.distanceBetween(markerPos.latitude, markerPos.longitude, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), results);
         Log.d("Distance", results[0] + "");
-        if(results[0] < 35 || true){ //TODO: Remove always true from this line
+        if(results[0] < 35 || true){ // TODO: Remove always true
             String words = CurrentMap.getWords();
             String[] lines = words.split(System.getProperty("line.separator"));
             String[] lineWords = lines[lineNumber].split("\t")[1].split(" ");
             String foundWord = lineWords[wordNumber];
-            marker.remove();
             // Get bottom sheet text
-            TextView bottomSheetText = (TextView) findViewById(R.id.bottom_sheet_text);
-            bottomSheetText.append(foundWord + "\r\n");
+            String placemarkStyle = CurrentMap.getPlacemarkStyle(marker.getTitle());
+            int numStyles = CurrentMap.getIconStyles().size();
+            String bitmapLink = CurrentMap.getIconStyles().get(0).getLink();
+            Bitmap bmp = CurrentMap.getIconStyles().get(0).getImage();
+            Log.d("Icon", placemarkStyle);
+            for (int i=0; i<numStyles; i++){
+                if(CurrentMap.getIconStyles().get(i).getName().equals(placemarkStyle)){
+                    bitmapLink = CurrentMap.getIconStyles().get(i).getLink();
+                    bmp = CurrentMap.getIconStyles().get(i).getImage();
+                }
+            }
+            Log.d("Icon", bitmapLink);
+            TextView bottomSheetText = findViewById(R.id.bottom_sheet_text);
+//            bottomSheetText.append(foundWord + "\r\n");
             // Add word to bottom sheet
+            LyricItem newLyric = new LyricItem();
+            foundWord = foundWord.substring(0, 1).toUpperCase() + foundWord.substring(1);
+            newLyric.setWord(foundWord);
+            newLyric.setIcon(bmp);
+            songList.add(newLyric);
+            mAdapter.notifyDataSetChanged();
+            marker.remove();
         }
         return true;
     }

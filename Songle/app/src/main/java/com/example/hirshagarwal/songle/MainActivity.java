@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         // If network permission was granted we probably want to initiate the map download so that it feels quick
         CurrentMap.loadData();
+        Log.d("Map", "Loading the map");
 
     }
 

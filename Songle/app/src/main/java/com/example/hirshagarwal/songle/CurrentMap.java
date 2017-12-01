@@ -40,7 +40,6 @@ public class CurrentMap{
     private static ArrayList<MapItem> mapItems = new ArrayList<MapItem>();
     private static ArrayList<MapIconStyle> mapIconStyles = new ArrayList<MapIconStyle>();
     private static ArrayList<Song> songList = new ArrayList<Song>();
-    private static MapView map;
     private static Song currentSong;
     private static int mapNumber = 1;
 
@@ -48,9 +47,18 @@ public class CurrentMap{
         downloadSongs.execute();
     }
 
+    public static URL getMapUrl(){
+        try{
+            mapUrl = new URL("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + currentSong.getNumber() + "/map" + mapNumber + ".kml");
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+
+        return mapUrl;
+    }
+
     public static void loadMap() {
         // Create the URL
-        int map = 0;
         // First parse the songs
         parseSongs(songsString);
         int numSongs = songList.size();
@@ -73,9 +81,10 @@ public class CurrentMap{
     public static void setMap(String mapString){
         // Set the map string
         CurrentMap.mapString = mapString;
-//        parseMap(mapString);
+        // Parse the map to get the icons
+        parseMap(mapString);
         Log.d("Map Download", "Map set");
-//        downloadIcons();
+        downloadIcons();
         mapLoaded = true;
     }
 
@@ -139,6 +148,52 @@ public class CurrentMap{
         }
     }
 
+    public static String getPlacemarkStyle(String placemarkName){
+        try{
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            XmlPullParser xpp = factory.newPullParser();
+            xpp.setInput(new StringReader(mapString));
+            int eventType = xpp.getEventType();
+            while(eventType != XmlPullParser.END_DOCUMENT){
+//                System.out.println("XPP - " + xpp.get)
+                if(eventType == XmlPullParser.START_TAG){
+//                    System.out.println("XPP: " + xpp.getName());
+                    String tagName = xpp.getName();
+                    if(tagName.equals("Placemark")){
+                        // Create a placemark
+                        MapItem newItem = new MapItem();
+                        // Get the placemark name
+                        while(xpp.getName() == null || !xpp.getName().equals("name")){
+                            xpp.next();
+                        }
+                        xpp.next();
+                        newItem.setName(xpp.getText());
+                        // Get the description
+                        while(xpp.getName() == null || !xpp.getName().equals("description")){
+                            xpp.next();
+                        }
+                        xpp.next();
+                        newItem.setType(xpp.getText());
+                        Log.d("Placemark Info", "Search: " + placemarkName + " current: " + newItem.getName());
+                        if (newItem.getName().equals(placemarkName)){
+                            return newItem.getType();
+                        }
+
+                        mapItems.add(newItem);
+                    }
+                }
+                eventType = xpp.next();
+            }
+        } catch (XmlPullParserException e){
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return "boring";
+    }
+
     private static void parseMap(String mapString){
         System.out.println("Parsing Map");
         try{
@@ -171,32 +226,6 @@ public class CurrentMap{
                         newStyle.setLink(xpp.getText());
                         mapIconStyles.add(newStyle);
                     }
-                    if(tagName.equals("Placemark")){
-                        // Create a placemark
-                        MapItem newItem = new MapItem();
-                        // Get the placemark name
-                        while(xpp.getName() == null || !xpp.getName().equals("name")){
-                            xpp.next();
-                        }
-                        xpp.next();
-                        newItem.setName(xpp.getText());
-                        // Get the description
-                        while(xpp.getName() == null || !xpp.getName().equals("description")){
-                            xpp.next();
-                        }
-                        xpp.next();
-                        newItem.setType(xpp.getText());
-                        // Get the coordinates
-                        while(xpp.getName() == null || !xpp.getName().equals("coordinates")){
-                            xpp.next();
-                        }
-                        xpp.next();
-                        String locationString = xpp.getText();
-                        String[] splitLocation = locationString.split(",");
-                        LatLng markLocation = new LatLng(Double.parseDouble(splitLocation[1]), Double.parseDouble(splitLocation[0]));
-                        newItem.setLocation(markLocation);
-                        mapItems.add(newItem);
-                    }
                 }
                 eventType = xpp.next();
             }
@@ -205,7 +234,6 @@ public class CurrentMap{
         } catch (IOException e){
             e.printStackTrace();
         }
-
     }
 
 
@@ -244,6 +272,18 @@ public class CurrentMap{
 
     public static String getWords(){
         return wordsString;
+    }
+
+    public static void setMapNumber(int mapNumber){
+        CurrentMap.mapNumber = mapNumber;
+    }
+
+    public static int getMapNumber(){
+        return mapNumber;
+    }
+
+    public static void incrementMapNumber(){
+        mapNumber ++;
     }
 
 
