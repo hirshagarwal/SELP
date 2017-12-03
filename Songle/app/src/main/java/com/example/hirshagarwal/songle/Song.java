@@ -1,6 +1,8 @@
 package com.example.hirshagarwal.songle;
 
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Hirsh Agarwal on 11/30/2017.
  */
@@ -11,6 +13,7 @@ public class Song {
     private String Artist;
     private String Title;
     private String Link;
+    private Bitmap Image;
 
     public void setNumber(String Number){
         this.Number = Number;
@@ -21,11 +24,19 @@ public class Song {
     }
 
     public void setTitle(String title){
-        this.Title = Title;
+        this.Title = title;
     }
 
     public void setLink(String link){
         this.Link = Link;
+    }
+
+    public void setImage(Bitmap image){
+        this.Image = image;
+    }
+
+    public Bitmap getImage(){
+        return Image;
     }
 
     public String getNumber(){

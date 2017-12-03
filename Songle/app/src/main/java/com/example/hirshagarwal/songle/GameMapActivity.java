@@ -38,6 +38,7 @@ import com.google.maps.android.data.kml.KmlLayer;
 import com.google.maps.android.data.kml.KmlPlacemark;
 
 import android.support.design.widget.FloatingActionButton;
+import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -109,6 +110,10 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         wordList.setLayoutManager(mLayoutManager);
         wordList.setItemAnimator(new DefaultItemAnimator());
         wordList.setAdapter(mAdapter);
+
+        // Output the song name
+        Log.d("Song", CurrentMap.getCurrentSong().getTitle());
+
         // Setup the timer
         createTimer();
 
@@ -241,7 +246,9 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         float[] results = new float[]{0, 0, 0};
         LatLng markerPos = marker.getPosition();
         if(mLastKnownLocation == null){
-            // TODO: Create location not found error
+            // TODO: Stop markers from showing anything
+            Toast t = Toast.makeText(getApplicationContext(), "Location Not Found", Toast.LENGTH_SHORT);
+            t.show();
             return false;
         }
         Location.distanceBetween(markerPos.latitude, markerPos.longitude, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), results);

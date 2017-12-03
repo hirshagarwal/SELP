@@ -264,6 +264,10 @@ public class CurrentMap{
         return mapString;
     }
 
+    public static Song getCurrentSong(){
+        return currentSong;
+    }
+
     public static void setSongsString(String songsString){
         CurrentMap.songsString = songsString;
     }
