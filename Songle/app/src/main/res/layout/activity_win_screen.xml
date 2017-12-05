@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.hirshagarwal.songle.WinScreen">
 
-    <ImageView android:id="@+id/backgroundImageView"
+    <ImageView android:id="@+id/winImage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/win_screen_base"
+        android:src="@drawable/win_screen_background_image"
         android:scaleType="centerCrop"
         android:alpha="0.95"
         app:layout_constraintTop_toTopOf="parent"

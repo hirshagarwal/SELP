@@ -52,9 +52,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
             public void onClick(View view) {
                 String songGuess = songList.get(position).getTitle();
                 String songTrue = CurrentMap.getCurrentSong().getTitle();
-                if(songGuess.equals(songTrue)){
+                if(songGuess.toLowerCase().equals(songTrue.toLowerCase())){
+                    Log.d("Song", "Correct");
                     Intent i = new Intent(context, WinScreen.class);
+//                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
+
                 } else {
                     Toast incorrect = Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT);
                     incorrect.show();

@@ -114,10 +114,15 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         // Output the song name
         Log.d("Song", CurrentMap.getCurrentSong().getTitle());
 
+
         // Setup the timer
         createTimer();
 
         //TODO: Create the bonus item drop times
+    }
+
+    public void winScreen(){
+        Log.d("Song Guess", "Correct Guess");
     }
 
     private void createTimer(){

@@ -39,10 +39,9 @@ public class GuessSongActivity extends AppCompatActivity{
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // fzrjYMcXldotXseGktwTsGQGEJvgAoeMuyfXjvoH
-//        String[] list = new String[]{"Song 1", "Song 2"};
         // Setup Adapter
-        mAdapter = new SongListAdapter(getApplicationContext(), songList);
+        mAdapter = new SongListAdapter(this, songList);
+//        mAdapter = new SongListAdapter(this, songList);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
 
