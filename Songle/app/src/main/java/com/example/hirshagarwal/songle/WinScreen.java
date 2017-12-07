@@ -41,15 +41,17 @@ public class WinScreen extends AppCompatActivity {
         editor.putStringSet(getString(R.string.scores), scoreSet);
 
         // Add the song to the song list
-        Set<String> songSet = sharedPref.getStringSet(getString(R.string.songsPlayed), null);
+        Set<String> songSet = new HashSet<>(sharedPref.getStringSet(getString(R.string.songsPlayed), null));
         if(songSet == null){
             songSet = new HashSet<String>();
         }
+
         Log.d("Preferences", songSet.size() + "");
         songSet.add(CurrentMap.getCurrentSong().getTitle());
+        Log.d("Preferences Updated", songSet.size()  + "");
         editor.putStringSet(getString(R.string.songsPlayed), songSet);
-
-        editor.commit();
+        boolean status = editor.commit();
+        Log.d("Preference Written", status + "");
 
 
         scoresButton = findViewById(R.id.viewScoresButton);

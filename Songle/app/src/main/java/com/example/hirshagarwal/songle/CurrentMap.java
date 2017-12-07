@@ -78,8 +78,12 @@ public class CurrentMap{
             Iterator playedSongIterator = songSet.iterator();
             while(playedSongIterator.hasNext()){
                 String currentSongCheck = playedSongIterator.next().toString();
-                songList.remove(currentSongCheck);
-                Log.d("Song Check", currentSongCheck);
+                for(int i=0; i<songList.size(); i++){
+                    if(songList.get(i).getTitle().equals(currentSongCheck)){
+                        songList.remove(i);
+                    }
+                }
+                Log.d("Song Check", currentSongCheck.toString());
             }
         } else {
             Log.d("Song Check", "No Songs Played");
