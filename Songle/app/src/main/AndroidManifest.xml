@@ -21,7 +21,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +47,8 @@
             android:label="@string/title_activity_game_mape" />
         <activity android:name=".GuessSongActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".WinScreen"></activity>
+        <activity android:name=".WinScreen" />
+        <activity android:name=".ScoresActivity"></activity>
     </application>
 
 </manifest>

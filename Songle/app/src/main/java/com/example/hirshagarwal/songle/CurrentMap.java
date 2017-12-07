@@ -1,5 +1,7 @@
 package com.example.hirshagarwal.songle;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Log;
 import android.util.Xml;
@@ -20,6 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created by Hirsh Agarwal on 9/25/2017.
@@ -42,6 +46,10 @@ public class CurrentMap{
     private static ArrayList<Song> songList = new ArrayList<Song>();
     private static Song currentSong;
     private static int mapNumber = 1;
+    private static int solveTime = 0;
+    private static double solveTimeAccurate = 0;
+    private static GameMapActivity gameMap;
+    private static MainActivity mainActivity;
 
     public static void loadData(){
         downloadSongs.execute();
@@ -61,6 +69,22 @@ public class CurrentMap{
         // Create the URL
         // First parse the songs
         parseSongs(songsString);
+
+        // Get the played songs
+        SharedPreferences prefs = mainActivity.getSharedPreferences(mainActivity.getString(R.string.preferences), Context.MODE_PRIVATE);
+        Set<String> songSet = prefs.getStringSet(mainActivity.getString(R.string.songsPlayed), null);
+
+        if(songSet != null){
+            Iterator playedSongIterator = songSet.iterator();
+            while(playedSongIterator.hasNext()){
+                String currentSongCheck = playedSongIterator.next().toString();
+                songList.remove(currentSongCheck);
+                Log.d("Song Check", currentSongCheck);
+            }
+        } else {
+            Log.d("Song Check", "No Songs Played");
+        }
+
         int numSongs = songList.size();
         // Random Song Number
         int randomNum = (int)(Math.random() * numSongs);
@@ -260,6 +284,14 @@ public class CurrentMap{
         return mapIconStyles;
     }
 
+    public static int getSolveTime(){
+        return solveTime;
+    }
+
+    public static void setSolveTime(int solveTime){
+        CurrentMap.solveTime = solveTime;
+    }
+
     public static String getMapString(){
         return mapString;
     }
@@ -292,5 +324,24 @@ public class CurrentMap{
         mapNumber ++;
     }
 
+    public static double getSolveTimeAccurate(){
+        return solveTimeAccurate;
+    }
+
+    public static void setSolveTimeAccurate(double solveTimeAccurate){
+        CurrentMap.solveTimeAccurate = solveTimeAccurate;
+    }
+
+    public static void setGameMapActivity(GameMapActivity gameMap){
+        CurrentMap.gameMap = gameMap;
+    }
+
+    public static GameMapActivity getGameMap(){
+        return gameMap;
+    }
+
+    public static void setMainActivity(MainActivity mainActivity){
+        CurrentMap.mainActivity = mainActivity;
+    }
 
 }

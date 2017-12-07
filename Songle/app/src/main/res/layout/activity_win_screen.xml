@@ -25,6 +25,28 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="100dp"/>
 
+    <TextView android:id="@+id/solveTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time: "
+        android:textSize="18pt"
+        app:layout_constraintBottom_toTopOf="@id/viewScoresButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="5dp"
+        />
+
+    <Button android:id="@+id/viewScoresButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Scores"
+        android:backgroundTint="@color/colorAccent"
+        android:textColor="@color/colorIcons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="10dp"/>
+
 
 
 

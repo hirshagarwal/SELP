@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Songle</string>
     <string name="title_activity_game_mape">Map</string>
+    <string name="highScore">highScore</string>
+    <string name="scores">scoresList</string>
+    <string name="songsPlayed">songsPlayedList</string>
+    <string name="preferences">mainPrefs</string>
+
 </resources>

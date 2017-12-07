@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         getLocationPermissions();
         getNetworkPermissions();
 
+        // Allow the current map object to access the context
+        CurrentMap.setMainActivity(this);
+
         // If network permission was granted we probably want to initiate the map download so that it feels quick
         CurrentMap.loadData();
         Log.d("Map", "Loading the map");
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     public void gameStart(View view){
         Intent intent = new Intent(this, GameMapActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void leaderboardStart(View view){

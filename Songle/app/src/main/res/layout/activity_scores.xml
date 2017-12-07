@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hirshagarwal.songle.ScoresActivity">
+
+    <android.support.constraint.ConstraintLayout android:id="@+id/topInformation"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="125dp">
+
+        <TextView android:id="@+id/gamesPlayed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Games Played"
+            android:textColor="@color/colorIcons"
+            android:textSize="10pt"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="25dp"
+            />
+
+        <TextView android:id="@+id/numGamesPlayed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25"
+            android:textSize="23pt"
+            android:textStyle="bold"
+            android:textColor="@color/colorIcons"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gamesPlayed"
+            android:layout_marginTop="10dp"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.design.widget.TabLayout android:id="@+id/tabLayout"
+        app:layout_constraintTop_toBottomOf="@id/topInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        />
+
+    <android.support.v4.view.ViewPager android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        />
+
+</android.support.constraint.ConstraintLayout>

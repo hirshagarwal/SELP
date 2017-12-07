@@ -69,6 +69,8 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
     private LyricsAdapter mAdapter;
     private List<LyricItem> songList = new ArrayList<>();
 
+
+
     // Hyperparameters
     private static int UPDATE_INTERVAL = 5000; // ms - How frequently app requests updates - Counts against battery consumption for app
     private static int FASEST_INTERVAL = 3000; // ms - How often app will receive updates if it is requested by other apps
@@ -92,10 +94,10 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         // Build the GoogleAPI Client
         googleApiClient = new GoogleApiClient.Builder(this)
-        .addApi(LocationServices.API)
-        .addConnectionCallbacks(this)
-        .addOnConnectionFailedListener(this)
-        .build();
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
         // Initialize location request with accuracy and frequency for GPS updates
         locationRequest = new LocationRequest();
@@ -111,18 +113,18 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         wordList.setItemAnimator(new DefaultItemAnimator());
         wordList.setAdapter(mAdapter);
 
-        // Output the song name
-        Log.d("Song", CurrentMap.getCurrentSong().getTitle());
+        CurrentMap.setGameMapActivity(this);
 
+        try {
+            // Output the song name
+            Log.d("Song", CurrentMap.getCurrentSong().getTitle());
+            // Setup the timer
+            createTimer();
+            //TODO: Create the bonus item drop times
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
-        // Setup the timer
-        createTimer();
-
-        //TODO: Create the bonus item drop times
-    }
-
-    public void winScreen(){
-        Log.d("Song Guess", "Correct Guess");
     }
 
     private void createTimer(){
@@ -135,7 +137,8 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         new CountDownTimer(30*60*1000, 1000){
             public void onTick(long millisUntilFinished){
                 bottomSheetHeader.setText("Time Remaining: " + (int)millisUntilFinished/(60*1000) + ":" + (millisUntilFinished/1000)%60);
-
+//                CurrentMap.setSolveTime((int)millisUntilFinished/(60*1000));
+                CurrentMap.setSolveTimeAccurate(millisUntilFinished);
                 if (((millisUntilFinished/(60*1000) == map2Time && !bonusActive) || !bonusActive) && CurrentMap.getMapNumber()<5){
                     // Add upgrade item
                     Log.d("Upgrade", "Map2");
@@ -175,6 +178,8 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         } catch(IOException e) {
             e.printStackTrace();
         } catch (org.xmlpull.v1.XmlPullParserException e){
+            e.printStackTrace();
+        } catch (NullPointerException e){
             e.printStackTrace();
         }
 
