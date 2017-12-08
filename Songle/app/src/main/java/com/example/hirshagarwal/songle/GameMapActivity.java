@@ -143,16 +143,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
                 if (((millisUntilFinished/(60*1000) == map2Time && !bonusActive)) && CurrentMap.getMapNumber()<5){
                     // Add upgrade item
                     Log.d("Upgrade", "Map2");
-                    double lowLat = 55.942617;
-                    double highLat = 55.946233;
-                    double lowLon = -3.184319;
-                    double highLon = -3.192473;
-                    double lat = (Math.random() * (highLat - lowLat)) + lowLat;
-                    double lon = (Math.random() * (highLon - lowLon)) + lowLon;
-                    Log.d("Latitude", lat+"");
-                    Log.d("Longitude", lon+"");
-                    LatLng bonusLoc = new LatLng(lat, lon);
-                    mMap.addMarker(new MarkerOptions().position(bonusLoc).title("Upgrade"));
+                    mMap.addMarker(new MarkerOptions().position(bonusLocation()).title("Upgrade"));
                     bonusActive = true;
                     CurrentMap.incrementMapNumber();
                     new DownloadMap().execute(CurrentMap.getMapUrl());
@@ -160,11 +151,21 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
                 }
             }
             public void onFinish(){
-                //TODO: Trigger out of time
                 Intent i = new Intent(getApplicationContext(), LoseActivity.class);
                 startActivity(i);
             }
         }.start();
+    }
+
+    public LatLng bonusLocation(){
+        double lowLat = 55.942617;
+        double highLat = 55.946233;
+        double lowLon = -3.184319;
+        double highLon = -3.192473;
+        double lat = (Math.random() * (highLat - lowLat)) + lowLat;
+        double lon = (Math.random() * (highLon - lowLon)) + lowLon;
+        LatLng bonusLoc = new LatLng(lat, lon);
+        return bonusLoc;
     }
 
     // Callback for when the map is ready
