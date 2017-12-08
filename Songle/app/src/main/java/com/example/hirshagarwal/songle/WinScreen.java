@@ -37,6 +37,7 @@ public class WinScreen extends AppCompatActivity {
         if(scoreSet == null){
             scoreSet = new HashSet<String>();
         }
+        Log.d("Scores List", scoreSet.size() + "");
         scoreSet.add(highScore+"");
         editor.putStringSet(getString(R.string.scores), scoreSet);
 
@@ -46,12 +47,12 @@ public class WinScreen extends AppCompatActivity {
             songSet = new HashSet<String>();
         }
 
-        Log.d("Preferences", songSet.size() + "");
+//        Log.d("Preferences", songSet.size() + "");
         songSet.add(CurrentMap.getCurrentSong().getTitle());
-        Log.d("Preferences Updated", songSet.size()  + "");
+//        Log.d("Preferences Updated", songSet.size()  + "");
         editor.putStringSet(getString(R.string.songsPlayed), songSet);
         boolean status = editor.commit();
-        Log.d("Preference Written", status + "");
+//        Log.d("Preference Written", status + "");
 
 
         scoresButton = findViewById(R.id.viewScoresButton);

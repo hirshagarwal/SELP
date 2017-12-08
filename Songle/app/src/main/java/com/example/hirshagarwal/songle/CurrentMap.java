@@ -90,6 +90,9 @@ public class CurrentMap{
         }
 
         int numSongs = songList.size();
+        if(numSongs == 0){
+            Log.e("No Songs Left", "There are no more playable songs. Please wait until new songs are added!");
+        }
         // Random Song Number
         int randomNum = (int)(Math.random() * numSongs);
         currentSong = songList.get(randomNum);

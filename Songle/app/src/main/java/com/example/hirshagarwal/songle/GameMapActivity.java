@@ -47,6 +47,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.cert.TrustAnchor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class GameMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
@@ -139,11 +140,19 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
                 bottomSheetHeader.setText("Time Remaining: " + (int)millisUntilFinished/(60*1000) + ":" + (millisUntilFinished/1000)%60);
 //                CurrentMap.setSolveTime((int)millisUntilFinished/(60*1000));
                 CurrentMap.setSolveTimeAccurate(millisUntilFinished);
-                if (((millisUntilFinished/(60*1000) == map2Time && !bonusActive) || !bonusActive) && CurrentMap.getMapNumber()<5){
+                if (((millisUntilFinished/(60*1000) == map2Time && !bonusActive)) && CurrentMap.getMapNumber()<5){
                     // Add upgrade item
                     Log.d("Upgrade", "Map2");
-                    LatLng edinburgh = new LatLng(55.9458, -3.1878);
-                    mMap.addMarker(new MarkerOptions().position(edinburgh).title("Upgrade"));
+                    double lowLat = 55.942617;
+                    double highLat = 55.946233;
+                    double lowLon = -3.184319;
+                    double highLon = -3.192473;
+                    double lat = (Math.random() * (highLat - lowLat)) + lowLat;
+                    double lon = (Math.random() * (highLon - lowLon)) + lowLon;
+                    Log.d("Latitude", lat+"");
+                    Log.d("Longitude", lon+"");
+                    LatLng bonusLoc = new LatLng(lat, lon);
+                    mMap.addMarker(new MarkerOptions().position(bonusLoc).title("Upgrade"));
                     bonusActive = true;
                     CurrentMap.incrementMapNumber();
                     new DownloadMap().execute(CurrentMap.getMapUrl());
@@ -152,6 +161,8 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
             }
             public void onFinish(){
                 //TODO: Trigger out of time
+                Intent i = new Intent(getApplicationContext(), LoseActivity.class);
+                startActivity(i);
             }
         }.start();
     }
