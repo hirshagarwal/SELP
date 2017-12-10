@@ -1,8 +1,6 @@
 package com.example.hirshagarwal.songle;
 
-import android.app.Fragment;
 import android.os.AsyncTask;
-import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -15,7 +13,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
+
 import java.net.URLEncoder;
 import java.util.Iterator;
 
