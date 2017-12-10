@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,6 +57,14 @@ public class WinScreen extends AppCompatActivity {
         boolean status = editor.commit();
 //        Log.d("Preference Written", status + "");
 
+        UploadTimes uploadTimes = new UploadTimes();
+        uploadTimes.setTime(CurrentMap.getSolveTimeAccurate());
+        try{
+            URL url = new URL("http://52.40.72.100/songle/uploadData.php");
+            uploadTimes.execute(url);
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        }
 
         scoresButton = findViewById(R.id.viewScoresButton);
         // Set the score button listener

@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
