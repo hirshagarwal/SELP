@@ -24,12 +24,14 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
+        public TextView artistTextView;
         public CardView mCardView;
 
         public ViewHolder(View v){
             super(v);
             mTextView = v.findViewById(R.id.info_text);
             mCardView = v.findViewById(R.id.card_view);
+            artistTextView = v.findViewById(R.id.artist_text);
         }
     }
 
@@ -50,14 +52,19 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String songGuess = songList.get(position).getTitle();
-                String songTrue = CurrentMap.getCurrentSong().getTitle();
-                if(songGuess.toLowerCase().equals(songTrue.toLowerCase())){
+                String songGuess = songList.get(position).getTitle().toLowerCase();
+                String songTrue = CurrentMap.getCurrentSong().getTitle().toLowerCase();
+                songGuess = songGuess.replaceAll("\\s+","");
+                songTrue = songTrue.replaceAll("\\s+","");
+                Log.d("Song Guess", songGuess);
+                Log.d("Song True", songTrue);
+                if(songGuess.equals(songTrue)){
                     Log.d("Song", "Correct");
                     Intent i = new Intent(context, WinScreen.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(i);
                     ((GuessSongActivity)context).finish();
+                    CurrentMap.setSongSolved(true);
                     CurrentMap.getGameMap().finish();
                 } else {
                     Toast incorrect = Toast.makeText(context, "Incorrect", Toast.LENGTH_SHORT);
@@ -66,6 +73,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
             }
         });
         holder.mTextView.setText(songList.get(position).getTitle());
+        holder.artistTextView.setText("Artist: " + songList.get(position).getArtist());
     }
 
     public int getItemCount(){

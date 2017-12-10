@@ -54,6 +54,8 @@ public class QuerySongs extends AsyncTask<URL, Integer, String>{
                 // Get the parameters from the object
                 JSONObject currentSongJSON = tracks.getJSONObject(i);
                 String songTitle = currentSongJSON.get("name").toString();
+                String songArtist = currentSongJSON.get("artist").toString();
+                newSong.setArtist(songArtist);
                 newSong.setTitle(songTitle);
                 songList.add(newSong);
                 parentActivity.addSong(newSong);

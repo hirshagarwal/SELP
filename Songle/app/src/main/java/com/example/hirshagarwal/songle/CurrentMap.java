@@ -50,6 +50,7 @@ public class CurrentMap{
     private static double solveTimeAccurate = 0;
     private static GameMapActivity gameMap;
     private static MainActivity mainActivity;
+    private static boolean songSolved = false;
 
     public static void loadData(){
         downloadSongs.execute();
@@ -64,7 +65,7 @@ public class CurrentMap{
         songList = new ArrayList<>();
         mapLoaded = false;
         iconsLoaded = false;
-
+        songSolved = false;
     }
 
     public static URL getMapUrl(){
@@ -349,7 +350,13 @@ public class CurrentMap{
     }
 
     public static void setSolveTimeAccurate(double solveTimeAccurate){
-        CurrentMap.solveTimeAccurate = solveTimeAccurate;
+        if(!songSolved){
+            CurrentMap.solveTimeAccurate = solveTimeAccurate;
+        }
+    }
+
+    public static void setSongSolved(boolean songSolved){
+        CurrentMap.songSolved = songSolved;
     }
 
     public static void setGameMapActivity(GameMapActivity gameMap){

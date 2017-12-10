@@ -25,9 +25,9 @@ public class WinScreen extends AppCompatActivity {
         // Store the new high score
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        double highScore = sharedPref.getFloat(getString(R.string.highScore), 30*(1000*60));
+        double highScore = sharedPref.getFloat(getString(R.string.highScore), 0);
         Log.d("Preferences", "High Score: " + highScore);
-        if(highScore > CurrentMap.getSolveTimeAccurate()){
+        if(highScore < CurrentMap.getSolveTimeAccurate()){
             Log.d("Preferences", "New High Score");
             editor.putFloat(getString(R.string.highScore), (float)CurrentMap.getSolveTimeAccurate());
         }
