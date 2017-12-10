@@ -14,7 +14,6 @@ licenses:
 script:
   - ./gradlew build
   - ./gradlew test
-  - ./gradlew ExampleUnitTest
 before_install:
   - cd Songle
   - chmod +x gradlew
