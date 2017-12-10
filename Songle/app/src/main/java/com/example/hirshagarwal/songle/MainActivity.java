@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
     public void gameStart(View view){
         Intent intent = new Intent(this, GameMapActivity.class);
         startActivity(intent);
-        finish();
     }
 
     public void leaderboardStart(View view){
