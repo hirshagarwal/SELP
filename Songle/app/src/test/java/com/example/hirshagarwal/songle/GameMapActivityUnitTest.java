@@ -26,10 +26,4 @@ public class GameMapActivityUnitTest {
         assertTrue(location.longitude > -3.192473);
     }
 
-    @Test
-    public void failingTest() throws Exception{
-        assertTrue(false);
-    }
-
-
 }
