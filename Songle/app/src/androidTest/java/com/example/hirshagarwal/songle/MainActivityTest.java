@@ -51,6 +51,5 @@ public class MainActivityTest{
     public void testSettingsButton(){
         onView(withId(R.id.main_page_settings_icon)).perform(click());
         onView(withId(R.id.toolbar_settings)).check(ViewAssertions.matches(isDisplayed()));
-        onView(withText("Designed in Edinburgh")).check(ViewAssertions.matches(isDisplayed()));
     }
 }
