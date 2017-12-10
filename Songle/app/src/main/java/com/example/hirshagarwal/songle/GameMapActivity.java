@@ -170,12 +170,12 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     // Callback for when the map is ready
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+        public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             public boolean onMarkerClick(Marker marker){
                 markerClickAction(marker);
-                return false;
+                return true;
             }
         });
         mapString = CurrentMap.getMapString();
@@ -269,13 +269,14 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         LatLng markerPos = marker.getPosition();
         if(mLastKnownLocation == null){
             // TODO: Stop markers from showing anything
+            marker.hideInfoWindow();
             Toast t = Toast.makeText(getApplicationContext(), "Location Not Found", Toast.LENGTH_SHORT);
             t.show();
             return false;
         }
         Location.distanceBetween(markerPos.latitude, markerPos.longitude, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), results);
         Log.d("Distance", results[0] + "");
-        if(results[0] < 35 || true){ // TODO: Remove always true
+        if(results[0] < 45){
             String words = CurrentMap.getWords();
             String[] lines = words.split(System.getProperty("line.separator"));
             String[] lineWords = lines[lineNumber].split("\t")[1].split(" ");
@@ -303,6 +304,10 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
             System.out.println("Last Song: " + songList.get(songList.size()-1).getWord());
             marker.remove();
             mAdapter.notifyDataSetChanged();
+        } else {
+            marker.hideInfoWindow();
+            Toast t = Toast.makeText(this, "Not Close Enough!", Toast.LENGTH_SHORT);
+            t.show();
         }
         return true;
     }

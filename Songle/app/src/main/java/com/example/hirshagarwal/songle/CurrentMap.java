@@ -55,6 +55,18 @@ public class CurrentMap{
         downloadSongs.execute();
     }
 
+    public static void clearMap(){
+        Log.d("Current Map", "Clear");
+        downloadSongs = new DownloadSongs();
+        downloadWords = new DownloadWords();
+        downloadMap = new DownloadMap();
+        mapItems = new ArrayList<>();
+        songList = new ArrayList<>();
+        mapLoaded = false;
+        iconsLoaded = false;
+
+    }
+
     public static URL getMapUrl(){
         try{
             mapUrl = new URL("http://www.inf.ed.ac.uk/teaching/courses/selp/data/songs/" + currentSong.getNumber() + "/map" + mapNumber + ".kml");
@@ -118,6 +130,7 @@ public class CurrentMap{
         parseMap(mapString);
         Log.d("Map Download", "Map set");
         downloadIcons();
+        mainActivity.setStartVisible(true);
         mapLoaded = true;
     }
 

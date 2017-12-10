@@ -37,19 +37,20 @@ public class WinScreen extends AppCompatActivity {
         if(scoreSet == null){
             scoreSet = new HashSet<String>();
         }
-        Log.d("Scores List", scoreSet.size() + "");
-        scoreSet.add(highScore+"");
+//        Log.d("Scores List", scoreSet.size() + "");
+        scoreSet.add(CurrentMap.getSolveTimeAccurate()+"");
         editor.putStringSet(getString(R.string.scores), scoreSet);
+//        Log.d("Score List Updated", scoreSet.size() + "");
 
         // Add the song to the song list
-        Set<String> songSet = new HashSet<>(sharedPref.getStringSet(getString(R.string.songsPlayed), null));
+        Set<String> songSet = sharedPref.getStringSet(getString(R.string.songsPlayed), null);
         if(songSet == null){
             songSet = new HashSet<String>();
         }
 
-//        Log.d("Preferences", songSet.size() + "");
+        Log.d("Preferences", songSet.size() + "");
         songSet.add(CurrentMap.getCurrentSong().getTitle());
-//        Log.d("Preferences Updated", songSet.size()  + "");
+        Log.d("Preferences Updated", songSet.size()  + "");
         editor.putStringSet(getString(R.string.songsPlayed), songSet);
         boolean status = editor.commit();
 //        Log.d("Preference Written", status + "");

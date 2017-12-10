@@ -3,12 +3,18 @@ package com.example.hirshagarwal.songle;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+import java.net.InetAddress;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,11 +25,19 @@ public class MainActivity extends AppCompatActivity {
     private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1337;
     private final int PERMISSIONS_REQUEST_ACCESS_INTERNET = 1338;
 
+    Button startButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CurrentMap.clearMap();
+
+        // Get the start button
+        startButton = findViewById(R.id.start_game_button);
+        setStartVisible(false);
 
         // Get Location Permissions
         getLocationPermissions();
@@ -32,9 +46,31 @@ public class MainActivity extends AppCompatActivity {
         // Allow the current map object to access the context
         CurrentMap.setMainActivity(this);
 
+        // Check that internet is connected
+        boolean internet = isInternetAvailable();
+        if (!internet){
+            Toast t = Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT);
+            t.show();
+            return;
+        }
         // If network permission was granted we probably want to initiate the map download so that it feels quick
         CurrentMap.loadData();
         Log.d("Map", "Loading the map");
+
+    }
+
+    public void setStartVisible(Boolean visible){
+        if(visible){
+            startButton.setVisibility(View.VISIBLE);
+        } else {
+            startButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
 
     }
 
@@ -67,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void leaderboardStart(View view){
-
+        Intent i = new Intent(this, ScoresActivity.class);
+        startActivity(i);
     }
 
     // Settings

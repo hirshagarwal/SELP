@@ -52,4 +52,14 @@
         app:layout_constraintTop_toBottomOf="@id/tabLayout"
         />
 
+
+    <ImageView android:id="@+id/scores_home_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/home_icon_shadow"
+        android:onClick="returnHome"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>
