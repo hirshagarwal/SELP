@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -51,5 +52,15 @@ public class MainActivityTest{
     public void testSettingsButton(){
         onView(withId(R.id.main_page_settings_icon)).perform(click());
         onView(withId(R.id.toolbar_settings)).check(ViewAssertions.matches(isDisplayed()));
+    }
+
+    // Test back button
+    @Test
+    public void testBackFromGameMap(){
+        SystemClock.sleep(1000);
+        onView(withId(R.id.start_game_button)).perform(click());
+        onView(withId(R.id.map)).check(ViewAssertions.matches(isDisplayed()));
+        pressBack();
+        onView(withText("Designed in Edinburgh")).check(ViewAssertions.matches(isDisplayed()));
     }
 }
