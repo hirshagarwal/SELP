@@ -276,7 +276,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
         Location.distanceBetween(markerPos.latitude, markerPos.longitude, mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), results);
         Log.d("Distance", results[0] + "");
-        if(results[0] < 45){
+        if(results[0] < 45 || true){
             String words = CurrentMap.getWords();
             String[] lines = words.split(System.getProperty("line.separator"));
             String[] lineWords = lines[lineNumber].split("\t")[1].split(" ");
