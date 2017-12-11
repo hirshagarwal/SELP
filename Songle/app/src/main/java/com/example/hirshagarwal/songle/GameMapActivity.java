@@ -268,7 +268,6 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
         float[] results = new float[]{0, 0, 0};
         LatLng markerPos = marker.getPosition();
         if(mLastKnownLocation == null){
-            // TODO: Stop markers from showing anything
             marker.hideInfoWindow();
             Toast t = Toast.makeText(getApplicationContext(), "Location Not Found", Toast.LENGTH_SHORT);
             t.show();
@@ -281,6 +280,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
             String[] lines = words.split(System.getProperty("line.separator"));
             String[] lineWords = lines[lineNumber].split("\t")[1].split(" ");
             String foundWord = lineWords[wordNumber];
+
             // Get bottom sheet text
             String placemarkStyle = CurrentMap.getPlacemarkStyle(marker.getTitle());
             int numStyles = CurrentMap.getIconStyles().size();
@@ -294,6 +294,7 @@ public class GameMapActivity extends FragmentActivity implements OnMapReadyCallb
                 }
             }
             Log.d("Icon", bitmapLink);
+
             // Add word to bottom sheet
             LyricItem newLyric = new LyricItem();
             foundWord = foundWord.substring(0, 1).toUpperCase() + foundWord.substring(1);

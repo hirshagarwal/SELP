@@ -33,16 +33,6 @@ public class DownloadMap extends AsyncTask<URL, Integer, String> {
     private HttpURLConnection httpConnection;
     private static final String ns = null;
 
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        // Ensure that everything is ready for the network request
-        // Check that URL is available
-        // TODO: Implement URL verification
-        // Try to convert the String to a URL
-    }
-
     // Interface Methods
     protected String doInBackground(URL... requestUrls){
         String mapDataString = "";
@@ -54,7 +44,6 @@ public class DownloadMap extends AsyncTask<URL, Integer, String> {
             // Connect to the specified URL
             httpConnection.connect();
             // Build a buffered reader
-            // TODO: Comment this xml input system
             BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
             String line = "";
             while((line = br.readLine()) != null){

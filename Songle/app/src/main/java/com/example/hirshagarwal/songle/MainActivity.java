@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     // Start game method
     public void gameStart(View view){
         Intent intent = new Intent(this, GameMapActivity.class);
