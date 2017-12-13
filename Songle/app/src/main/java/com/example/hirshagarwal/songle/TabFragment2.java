@@ -52,12 +52,12 @@ public class TabFragment2 extends Fragment {
         top = (30*1000*60) - top;
         int minutes = top/(1000*60);
         int seconds = top/1000%60;
-        topScore.setText(minutes+":"+seconds);
+        topScore.setText(String.format("%02d", minutes)+ ":" + String.format("%02d", seconds));
 
         // Set the average score
         average = (30*1000*60) - average;
         minutes = average/(1000*60);
         seconds = average/1000%60;
-        averageScore.setText(minutes+":"+seconds);
+        averageScore.setText(String.format("%02d", minutes)+ ":" + String.format("%02d", seconds));
     }
 }

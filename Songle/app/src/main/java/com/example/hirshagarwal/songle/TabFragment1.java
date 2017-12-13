@@ -43,13 +43,13 @@ public class TabFragment1 extends Fragment {
             totalTime = (30*1000*60) - totalTime;
             int mins = (int)totalTime/(1000*60);
             int seconds = (int)totalTime/1000%60;
-            averageTime.setText(mins + ":" + seconds);
+            averageTime.setText(String.format("%02d", mins)+ ":" + String.format("%02d", seconds));
 
             // Set the last solve time
             lastSolveTime = (30 * 1000 * 60) - lastSolveTime;
             mins = (int)lastSolveTime/(1000*60);
             seconds = (int)lastSolveTime/1000%60;
-            lastTime.setText(mins+":"+seconds);
+            lastTime.setText(String.format("%02d", mins)+ ":" + String.format("%02d", seconds));
 
         } else {
             averageTime.setText("None");
@@ -61,7 +61,7 @@ public class TabFragment1 extends Fragment {
             highScoreDouble = (30*1000*60) - highScoreDouble;
             int mins = (int)highScoreDouble/(1000*60);
             int seconds = (int)highScoreDouble/1000%60;
-            bestTime.setText(mins + ":" + seconds);
+            bestTime.setText(String.format("%02d", mins) + ":" + String.format("%02d", seconds));
         } else {
             bestTime.setText("None");
         }
