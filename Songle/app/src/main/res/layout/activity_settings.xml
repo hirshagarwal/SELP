@@ -44,7 +44,7 @@
         android:layout_marginLeft="10dp"
         />
 
-    <Switch
+    <Switch android:id="@+id/locationSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -59,7 +59,7 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
 
-    <TextView
+    <TextView android:id="@+id/informationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="About Songle"
@@ -68,6 +68,19 @@
         app:layout_constraintTop_toBottomOf="@id/dividerLine"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView android:id="@+id/appInformationText"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/informationTitle"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="6pt"
+        android:text="Songle is a location based game which allows a player to collect words distributed around George Square. Internet permissions are required to download all of the map and song information and location is required to check how close a player is to the markers."
+        />
 
 
 
